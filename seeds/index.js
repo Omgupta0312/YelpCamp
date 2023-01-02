@@ -24,10 +24,17 @@ const seedDB = async () => {
     await Campground.deleteMany({});
     for (let i = 0; i < 50; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
+        const price = Math.floor(Math.random() *50)+10;
         const camp = new Campground({
             location: `${cities[random1000].city},${cities[random1000].state}`,
 
-            title: `${sample(descriptors)} ${sample(places)}`
+            title: `${sample(descriptors)} ${sample(places)}`,
+
+            image:"https://source.unsplash.com/collection/483251",
+
+            description:"Learning a little each day adds up. Research shows that students who make learning a habit are more likely to reach their goals. Set time aside to learn and get reminders using your learning scheduler.",
+
+            price
         })
         await camp.save();
 
