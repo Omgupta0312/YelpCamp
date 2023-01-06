@@ -31,9 +31,22 @@ const seedDB = async () => {
 
             title: `${sample(descriptors)} ${sample(places)}`,
 
-            image:"https://source.unsplash.com/collection/483251",
-
             description:"Learning a little each day adds up. Research shows that students who make learning a habit are more likely to reach their goals. Set time aside to learn and get reminders using your learning scheduler.",
+
+            images:[
+                {
+                  url: 'https://res.cloudinary.com/dyjhgujaa/image/upload/v1673012654/YelpCamp/la0rzqveiuficaqj8yhy.jpg',
+                  filename: 'YelpCamp/la0rzqveiuficaqj8yhy'
+                },
+                {
+                  url: 'https://res.cloudinary.com/dyjhgujaa/image/upload/v1673012665/YelpCamp/avgiczdnaoc2mrm3a8ym.jpg',
+                  filename: 'YelpCamp/avgiczdnaoc2mrm3a8ym'
+                },
+                {
+                  url: 'https://res.cloudinary.com/dyjhgujaa/image/upload/v1673012666/YelpCamp/q7fprxkys0f6rtiq70fs.jpg',
+                  filename: 'YelpCamp/q7fprxkys0f6rtiq70fs'
+                }
+              ],
 
             price
         })
