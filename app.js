@@ -17,14 +17,20 @@ const ExpressError = require("./utils/ExpressError")
 const User = require('./models/user')
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
+// const dbUrl = process.env.DB_URL;
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
+
+const MongoDBStore = require('connect-mongo')
 
 //routes-------------------------------
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
-const userRoutes = require('./routes/users')
+const userRoutes = require('./routes/users');
+const MongoStore = require('connect-mongo');
 
+// mongodb://localhost:27017/yelp-camp
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb://localhost:27017/yelp-camp', {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
@@ -104,9 +110,22 @@ app.use(
 //   next()
 // })
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+const store = new MongoDBStore({
+    mongoUrl: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60
+})
+
+store.on("error", function (e) {
+    console.log("Session Store error", e)
+});
+
+
 const sessionConfig = {
+    store,
     name: 'session',
-    secret: 'thisshouldbeabettersecret!',
+    secret, 
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -157,6 +176,7 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err })
 });
 
-app.listen(3000, () => {
-    console.log('Listening on port 3000')
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`)
 });
